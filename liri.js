@@ -29,18 +29,19 @@ switch(command) {
     case 'spotify-this-song':
         // if (choice === []) {
         //     spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
-        //         if (err) {
-        //             return console.log('Error occurred: ' + err);
-        //         }
-        //         console.log(data.tracks.items[0]);
+        //         console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
+        //         console.log("Song Name: " + data.tracks.items[1].name);
+        //         console.log("Preview URL: " + data.tracks.items[1].preview_url);
+        //         console.log("Album Name: " + data.tracks.items[1].album.name);
         //     });
         // } else {
             spotify.search({ type: 'track', query: choice }, function (err, data) {
                 console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
+                console.log("Song Name: " + data.tracks.items[1].name);
+                console.log("Preview URL: " + data.tracks.items[1].preview_url);
                 console.log("Album Name: " + data.tracks.items[1].album.name);
-               
             });
-        } 
+        }
 // Artist(s)
 // The song's name
 // A preview link of the song from Spotify
