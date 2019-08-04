@@ -4,8 +4,8 @@ This client side application is used for searching through API's to sort the inf
 
 The App is organized through a switch case with functions and Axios calls to retrieve the information desired and display the basic return information to the user. 
 
-The App is used by typing in node liri.js (see next line)
-And then one of the following --> concert-this / spotify-this-song / movie-this / do-what-it-says
+The App is used by typing in node liri.js (see next line)<br>
+And then one of the following --> concert-this / spotify-this-song / movie-this / do-what-it-says <br>
 This will retrieve information from the different API based off of the search term and display it in the basic format laid out.
 
 The App uses Axios / API / Javascript / JSON / .gitignore / .env 
