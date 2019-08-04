@@ -3,7 +3,7 @@ var Spotify = require('node-spotify-api');
 var keys = require("./keys");
 var axios = require('axios');
 var moment = require('moment');
-
+const fs = require('fs')
 var spotify = new Spotify(keys.spotify);
 
 var command = process.argv[2];
@@ -14,10 +14,10 @@ for (let i = 3; i < process.argv.length; i++) {
     choice.push(process.argv[i]);
 }
 choice = choice.join('');
-
+function look(command, choice){
 switch(command) {
     case 'movie-this':
-        if (choice===[]){
+        if (choice===''){
             movie("mr.nobody")
         } else {
             movie(choice)
@@ -27,25 +27,46 @@ switch(command) {
             bands(choice); 
     break;
     case 'spotify-this-song':
-        // if (choice === []) {
-        //     spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
-        //         console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
-        //         console.log("Song Name: " + data.tracks.items[1].name);
-        //         console.log("Preview URL: " + data.tracks.items[1].preview_url);
-        //         console.log("Album Name: " + data.tracks.items[1].album.name);
-        //     });
-        // } else {
-            spotify.search({ type: 'track', query: choice }, function (err, data) {
-                console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
-                console.log("Song Name: " + data.tracks.items[1].name);
+    
+        spotify.search({ type: 'track', query: choice }, function (err, data) {
+            if (data=== null) {
+                spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
+                    console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
+                    console.log("Song Name: " + data.tracks.items[1].name);
+                    console.log("Preview URL: " + data.tracks.items[1].preview_url);
+                    console.log("Album Name: " + data.tracks.items[1].album.name);
+                    return;
+                })} else {
+                  console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
+                 console.log("Song Name: " + data.tracks.items[1].name);
                 console.log("Preview URL: " + data.tracks.items[1].preview_url);
                 console.log("Album Name: " + data.tracks.items[1].album.name);
-            });
+                }})
+          
+    break;
+    case 'do-what-it-says':
+        fs.readFile("random.txt", "utf8", function (err, response) {
+
+            // If the code experiences any errors it will log the error to the console.
+            if (err) {
+                return console.log(err);
+            }
+            // Otherwise
+            
+            var response = response.split(',');
+            var command = response[0];
+            var choice = response[1];
+            look(command, choice);
+
+            
+
+        });
+
+    break;
         }
-// Artist(s)
-// The song's name
-// A preview link of the song from Spotify
-// The album that the song is from
+    }
+    look(command, choice);
+
 
 //Axios Call for Bands in Town based on user choice entry
 function bands(artist) {
@@ -60,7 +81,6 @@ function bands(artist) {
         var time = object.datetime
         var newTime = moment(time).format("MM/DD/YYYY") // reformats the object.datetime to MM DD YYYY
         console.log(newTime)
-        // console.log(object.datetime.toString("yyyyMMddHHmmss"))
     })
 }
 
@@ -83,6 +103,3 @@ axios.get("http://www.omdbapi.com/?t=" + choice + '&y=&plot=short&apikey=trilogy
         console.log("Plot: " + data.Plot)
         console.log("Actors: " + data.Actors)
     })}
-
-
-    
