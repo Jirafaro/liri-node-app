@@ -14,8 +14,7 @@ for (let i = 3; i < process.argv.length; i++) {
     choice.push(process.argv[i]);
 }
 choice = choice.join('');
-console.log(command);
-console.log(choice);
+
 switch(command) {
     case 'movie-this':
         if (choice===[]){
@@ -27,21 +26,27 @@ switch(command) {
     case 'concert-this':
             bands(choice); 
     break;
-        }
-    
+    case 'spotify-this-song':
+        // if (choice === []) {
+        //     spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
+        //         if (err) {
+        //             return console.log('Error occurred: ' + err);
+        //         }
+        //         console.log(data.tracks.items[0]);
+        //     });
+        // } else {
+            spotify.search({ type: 'track', query: choice }, function (err, data) {
+                console.log("Artist Name: " + data.tracks.items[1].album.artists[0].name);
+                console.log("Album Name: " + data.tracks.items[1].album.name);
+               
+            });
+        } 
+// Artist(s)
+// The song's name
+// A preview link of the song from Spotify
+// The album that the song is from
 
-
-
- 
-// spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-//   if (err) {
-//     return console.log('Error occurred: ' + err);
-//   }
- 
-//     console.log(data); 
-// });
-
-//Axios Call for Bands in Town for argv3
+//Axios Call for Bands in Town based on user choice entry
 function bands(artist) {
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp") // push user choice into array then search Bands in Town API for choice 
     .then(function (response){
@@ -52,16 +57,13 @@ function bands(artist) {
         console.log(object.venue.name)
         console.log(object.venue.city + ", " + object.venue.region + object.venue.country)
         var time = object.datetime
-        var newTime = moment(time).format("MM/DD/YYYY")
+        var newTime = moment(time).format("MM/DD/YYYY") // reformats the object.datetime to MM DD YYYY
         console.log(newTime)
         // console.log(object.datetime.toString("yyyyMMddHHmmss"))
     })
 }
- // Name of the venue
-        // Venue location
-        // Date of the Event(use moment to format this as "MM/DD/YYYY")
 
-// Axios Call for OMDB Database for argv3 
+// Axios Call for OMDB Database based on user choice entry 
 function movie(choice) {
 axios.get("http://www.omdbapi.com/?t=" + choice + '&y=&plot=short&apikey=trilogy') //push user choice into array then search omdb for this choice
     .then(function (response) {
@@ -80,4 +82,6 @@ axios.get("http://www.omdbapi.com/?t=" + choice + '&y=&plot=short&apikey=trilogy
         console.log("Plot: " + data.Plot)
         console.log("Actors: " + data.Actors)
     })}
+
+
     
